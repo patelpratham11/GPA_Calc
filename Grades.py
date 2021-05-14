@@ -9,50 +9,56 @@ grades = []
 def mainWindowSetup():
 
     # Setup the main window
-    mainWindow.geometry("800x500")
+    mainWindow.geometry("600x500")
     mainWindow.title("GPA Calculator")
-    mainWindow.configure(background="#485460")
+    mainWindow.configure(background="#353b48")
 
     # Add a label
-    Label(mainWindow, text="Welcome to the GPA Calculator created by Pratham Patel", bg="#485460", fg="white", font="menlo 22 bold").grid(row=0, column=1, sticky=N)
+    Label(mainWindow, text="Welcome to the GPA Calculator", bg="#353b48", fg="#f8a5c2", font="menlo 28 bold").place(relx=0.5, y=25, anchor=CENTER)
+    Label(mainWindow, text="Created by Pratham Patel", bg="#353b48", fg="#f8a5c2", font="menlo 22 bold").place(relx=0.5, y=400, anchor=CENTER)
 
     # Adding Buttons
-    Button(mainWindow, text="Create a New Semester", highlightbackground="#ff5e57", fg="#1e272e", command=newSem, width="20").grid(row=1, column=1, sticky=N)
-    Button(mainWindow, text="Calculate from Past", bg="#808e9b", fg="#1e272e", command=oldSem, width="20").grid(row=2, column=1, sticky=N)
+    Button(mainWindow, text="Create a New Semester", highlightbackground="#9c88ff", fg="#596275", command=newSem, width="20", padx="20", pady="20", font="menlo 16 bold" ).place(relx=0.5, y= 150, anchor=CENTER)
+    Button(mainWindow, text="Calculate from Past", highlightbackground="#74b9ff", fg="#596275", command=oldSem, width="20", padx="20", pady="20", font="menlo 16 bold").place(relx=0.5, y= 300, anchor=CENTER)
 
     # Actually run the program
     mainWindow.mainloop()
 
+def deiconify(window):
+    mainWindow.deiconify()
+    window.destroy()
 
 ### NEW SEMESTER WORK ###
 def newSem():
     newWindow = Tk()
     newWindow.geometry("400x400")
-    newWindow.configure(background="#485460")
+    newWindow.configure(background="#353b48")
     mainWindow.iconify()
     newWindow.title("Create a New Semester")
 
     #Finding out how many classes
-    numClasses = Entry(newWindow, width=20, bg="white")
-    numClasses.grid(row=0, column=0, sticky=NE)
+    Label(newWindow, text="Please enter the number of classes", bg="#353b48", fg="#63cdda", font="menlo 16 bold").place(relx=0.5, rely=0.15, anchor=CENTER)
+    numClasses = Entry(newWindow, width="20", bg="#7f8fa6", font="menlo 15", fg="#ff9ff3", justify="center")
+    numClasses.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-    Button(newWindow, text="SUBMIT", bg="#0be881", fg="#d2dae2", command= lambda: allClasses(numClasses, newWindow), width="20").grid(row=1, column=0, sticky=NE)
+    Button(newWindow, text="SUBMIT", highlightbackground="#1dd1a1", fg="#222f3e", command= lambda: allClasses(numClasses, newWindow), width="20", font="menlo 16 bold", justify="center").place(relx=0.5, rely=0.60, anchor=CENTER)
 
     newWindow.mainloop()
 
 def allClasses(numClasses, newWindow):
     totalClasses = int(numClasses.get())
-    numClasses.destroy()
-    Label(newWindow, text="Please enter all of your classes here", bg="black", fg="white", font="menlo 12 bold").grid(row=0, column=1, sticky=N)
+    for widget in newWindow.winfo_children():
+        widget.destroy()
+    Label(newWindow, text="Please enter all of your classes here", bg="#353b48", fg="#63cdda", font="menlo 16 bold").place(relx=0.5, rely=0.15, anchor=CENTER)
 
 
     #Naming all classes
     for x in range(totalClasses):
-        className = Entry(newWindow, width=20, bg="white")
-        className.grid(row=x+1, column=1, sticky=N)
+        className = Entry(newWindow, width=20, bg="#7f8fa6", font="menlo 15", fg="#ff9ff3", justify="center")
+        className.place(relx=0.5, y=(x*30)+150, anchor=CENTER)
         classes.append(className)
 
-    Button(newWindow, text="SUBMIT", bg="#0be881", fg="#d2dae2", command= lambda: outputWrite(newWindow), width="20").grid(row=totalClasses+1, column=1, sticky=N)
+    Button(newWindow, text="SUBMIT", highlightbackground="#1dd1a1", fg="#222f3e", command= lambda: outputWrite(newWindow), width="20", font="menlo 16 bold").place(relx=0.5, y=(totalClasses*30)+200, anchor=CENTER)
 
 
 def outputWrite(newWindow):
@@ -68,29 +74,28 @@ def outputWrite(newWindow):
         widget.destroy()
 
     #Message saying everything has been saved
-    Label(newWindow, text="Your classes have been saved!", bg="black", fg="white", font="menlo 12 bold").grid(row=0, column=1, sticky=N)
-    mainWindow.deiconify()
-    newWindow.destroy()
+    Label(newWindow, text="Your classes have been saved!", bg="#353b48", fg="#63cdda", font="menlo 16 bold").place(relx=0.5, rely=0.5, anchor=CENTER)
+    Button(newWindow, text="OKAY", highlightbackground="#0be881", fg="#596275", command= lambda: deiconify(newWindow), width="20", font="menlo 16 bold").place(relx=0.45, rely=0.65, anchor=CENTER)
 
 
 ### OLD SEMESTER WORK ###
 def oldSem():
     oldWindow = Tk()
     oldWindow.geometry("400x400")
-    oldWindow.configure(background="#485460")
+    oldWindow.configure(background="#353b48")
     oldWindow.title("Semester Grades")
-
+    mainWindow.iconify()
     textfile = open("semester.txt", "r")
     classes = textfile.read().split(",")
     classes.pop()
 
     for x in range(len(classes)):
-        Label(oldWindow, text=classes[x], bg="black", fg="white", font="menlo 12 bold").grid(row=x+1, column=1, sticky=N)
-        grade = Entry(oldWindow, width=20, bg="white")
-        grade.grid(row=x+1, column=2, sticky=N)
+        Label(oldWindow, text=classes[x], bg="#353b48", fg="#63cdda", font="menlo 16 bold").place(relx=0.3, y=(x*30)+150, anchor=CENTER)
+        grade = Entry(oldWindow, width=20, bg="#7f8fa6", justify="center", font="menlo 15", fg="#ff9ff3")
+        grade.place(relx=0.67, y=(x*30)+150, anchor=CENTER)
         grades.append(grade)
 
-    Button(oldWindow, text="SUBMIT", bg="#0be881", fg="#d2dae2", command= lambda: mathCalc(oldWindow), width="20").grid(row=len(classes)+1, column=1, sticky=N)
+    Button(oldWindow, text="SUBMIT", highlightbackground="#1dd1a1", fg="#222f3e", command= lambda: mathCalc(oldWindow), width="20", font="menlo 16 bold").place(relx=0.5, y=(len(classes)*30)+200, anchor=CENTER)
 
 def mathCalc(oldWindow):
     gpa = 0;
@@ -127,6 +132,7 @@ def mathCalc(oldWindow):
     for widget in oldWindow.winfo_children():
         widget.destroy()
 
-    Label(oldWindow, text=gpa, bg="black", fg="white", font="menlo 12 bold").grid(row=len(grades)+2, column=1, sticky=N)
+    Label(oldWindow, text="Your GPA currently is: "+ str(gpa), bg="#353b48", fg="#63cdda", font="menlo 16 bold").place(relx=0.5, rely=0.35, anchor=CENTER)
+    Button(oldWindow, text="OKAY", highlightbackground="#0be881", fg="#596275", command= lambda: deiconify(oldWindow), width="20", font="menlo 16 bold").place(relx=0.5, rely=0.55, anchor=CENTER)
 
 mainWindowSetup()
