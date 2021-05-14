@@ -24,6 +24,7 @@ def mainWindowSetup():
     # Actually run the program
     mainWindow.mainloop()
 
+# function to deiconify
 def deiconify(window):
     mainWindow.deiconify()
     window.destroy()
@@ -60,7 +61,7 @@ def allClasses(numClasses, newWindow):
 
     Button(newWindow, text="SUBMIT", highlightbackground="#1dd1a1", fg="#222f3e", command= lambda: outputWrite(newWindow), width="20", font="menlo 16 bold").place(relx=0.5, y=(totalClasses*30)+200, anchor=CENTER)
 
-
+# saving all into a text file
 def outputWrite(newWindow):
 
     #Save information into a text file
